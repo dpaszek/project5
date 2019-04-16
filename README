@@ -1,0 +1,35 @@
+Name: Drew Paszek
+
+Course: CPSC 4160
+
+Clemson Email Address: dpaszek@clemson.edu
+
+Project no: #4
+
+Project due date: 3/29/2019
+
+Project description: 
+- The game I am creating will be called "Trash Shark" in which the player (a shark sprite)
+will work to clean up the ocean by eating trash, which will also be incorporated as a smart
+sprite.  There will be a limited number of trash sprites, so the user will work their best to
+dispel of all of the trash as quickly as they can (the shorter the time the better) while 
+attempting to avoid the other fish in the sea as "fish are friends, not food."  I don't plan
+to have the user shoot or anything so it will be a matter of using ASDW to move the shark to
+the location of the trash and dispel of it on contact.  The game will end when either all of
+trash is gotten rid of or if the shark does end up making contact with another fish.  
+Therefore, successful completion of the game can only occur if all of the trash is picked up
+without making contact with another fish, and from there, players can strive to pick up the 
+trash in the least amount of time.    
+
+Sprite Sources:
+Ocean background: https://www.desktopbackground.org/download/1920x1080/2010/10/08/91953_underwater-ocean-water-backgrounds_1920x1200_h.jpg
+
+Mountains background: https://vignette.wikia.nocookie.net/subnautica/images/3/34/Mountains_Biome.png/revision/latest?cb=20180124190720
+
+Shark: https://www.deviantart.com/siri-existence/art/Robo-Shark-Spritesheet-700450905
+
+Starfish: https://www.freepngimg.com/png/17970-starfish-png-clipart
+
+Fish: https://blog.redbluegames.com/when-we-started-mini-fish-i-had-been-wanting-to-try-my-hand-at-some-pixel-art-which-i-d-never-be6bc4e9652c
+
+Trash: https://www.pngkey.com/png/full/28-281952_trash-can-png.png
