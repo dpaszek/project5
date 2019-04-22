@@ -60,7 +60,7 @@
   <bulletName>Bullet</bulletName>
   <chunk>
     <size>16</size>
-    <distance>200</distance>
+    <distance>100</distance>
   </chunk>
 </shark>
 
@@ -111,7 +111,7 @@
   <speedX>300</speedX>
   <speedY>0</speedY>
   <interval>100</interval>
-  <distance>320</distance>
+  <distance>400</distance>
   <scale>1</scale>
   <transparency>false</transparency>
   <frames>1</frames>
@@ -119,10 +119,10 @@
 
 <hud>
 	<r>255</r>
-	<g>0</g>
+	<g>225</g>
 	<b>0</b>
 	<a>255</a>
-	<size>20</size>
+	<size>15</size>
 </hud>
 
 

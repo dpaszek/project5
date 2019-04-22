@@ -5,6 +5,7 @@
 #include "ioMod.h"
 #include "clock.h"
 #include "gameData.h"
+#include "multiBullets.h"
 
 class hud
 {
@@ -12,7 +13,7 @@ class hud
 public:
 	hud();
 	~hud();
-	void draw(bool) const;
+	void draw(bool, int, int) const;
 	static hud& getInstance();
 	
 	hud(const hud&) = delete;

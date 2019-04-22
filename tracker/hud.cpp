@@ -42,18 +42,17 @@ hud::hud() :
 	init(TTF_Init()),
 	rend(RenderContext::getInstance().getRenderer()),
 	clock(Clock::getInstance())
-	
 {}
 
-void hud::draw(bool enable) const
+void hud::draw(bool enable, int bulletCt, int freeCt) const
 {
 	if(enable == true)
 	{
 		SDL_Rect re;
     	re.x = 0;
     	re.y = 0;
-    	re.w = 400;
-    	re.h = 180;
+    	re.w = 370;
+    	re.h = 190;
     	
     	SDL_SetRenderDrawColor( rend, r, g, b, a);
     	SDL_RenderDrawRect( rend, &re );
@@ -63,17 +62,40 @@ void hud::draw(bool enable) const
   		std::stringstream strm;
   		strm << "fps: " << clock.getFps();
   		fps = strm.str();
-  		string msg1 = "Objective: Clean ocean by eating trash";
+  		string msg1 = "Objective: Clean ocean by eating/shooting trash";
   		writeText(font, msg1, 5, 5, col, rend);
+  		string msg1l2 = "Objective: Avoid other fish! Fish are friends, not food!";
+  		writeText(font, msg1l2, 5, 25, col, rend);
   		string msg2 = "ASDW - Move Shark Player";
-  		writeText(font, msg2, 5, 30, col, rend);
+  		writeText(font, msg2, 5, 50, col, rend);
+  		string msg2l2 = "SPACE Bar - Shoot";
+  		writeText(font, msg2l2, 5, 70, col, rend);
   		string msg3 = "P - Pause Game";
-  		writeText(font, msg3, 5, 55, col, rend);
+  		writeText(font, msg3, 5, 95, col, rend);
   		string msg4 = "ESC/q - Quit Game";
-  		writeText(font, msg4, 5, 80, col, rend);
+  		writeText(font, msg4, 5, 120, col, rend);
   		string msg5 = "F1 - Toggle HUD";
-  		writeText(font, msg5, 5, 105, col, rend);
-  		writeText(font, fps, 5, 130, col, rend);
+  		writeText(font, msg5, 5, 145, col, rend);
+  		writeText(font, fps, 5, 170, col, rend);
+  		
+  		SDL_Rect pool;
+  		pool.x = 700;
+  		pool.y = 0;
+  		pool.w = 200;
+  		pool.h = 60;
+  		SDL_RenderDrawRect(rend, &pool);
+  		
+  		std::stringstream strm2;
+  		strm2 << "Bullet List: " << bulletCt;
+  		std::string bCT = strm2.str();
+  		
+  		std::stringstream strm3;
+  		strm3 << "Pool: " << freeCt;
+  		std::string fCT = strm3.str();
+  		
+  		writeText(font, bCT, 705, 5, col, rend);
+  		writeText(font, fCT, 705, 30, col, rend);
 
 	}
 }
+

@@ -6,8 +6,9 @@
 #include "collisionStrategy.h"
 
 multiBullets::~multiBullets(){
-
+	delete strategy;
 }
+
 
 multiBullets::multiBullets(const std::string& n) :
   name(n),

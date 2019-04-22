@@ -8,6 +8,7 @@
 #include "world.h"
 #include "viewport.h"
 #include "hud.h"
+#include "sound.h"
 
 class CollisionStrategy;
 class SmartSprite;
@@ -44,6 +45,7 @@ private:
   bool hudState;
   
   bool makeVideo;
+  SDLSound sound;
 
   void draw() const;
   void update(Uint32);

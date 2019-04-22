@@ -49,7 +49,8 @@ Engine::Engine() :
   strategies(),
   h(hud::getInstance()),
   hudState(true),
-  makeVideo( false )
+  makeVideo( false ),
+  sound()
 {
   
   strategies.push_back( new PerPixelCollisionStrategy );
@@ -96,10 +97,10 @@ Engine::Engine() :
 void Engine::draw() const {
   ocean.draw();
   mount.draw();
-  h.draw(hudState);
+  h.draw(hudState, player->bulletCount(), player->freeCount());
   player->draw();
   
-  strategies[currentStrategy]->draw();
+  //strategies[currentStrategy]->draw();
 
   for(auto& t : dumb)
   {
@@ -194,6 +195,9 @@ void Engine::play() {
           else
           	hudState = 0;
         }
+        if ( keystate[SDL_SCANCODE_O] ) {
+          sound.toggleMusic();
+        }
         if ( keystate[SDL_SCANCODE_P] ) {
           if ( clock.isPaused() ) clock.unpause();
           else clock.pause();
@@ -219,6 +223,7 @@ void Engine::play() {
       clock.incrFrame();
       if (keystate[SDL_SCANCODE_SPACE]){
       	static_cast<Player*>(player)->shoot();
+      	sound[0];
       }
       if (keystate[SDL_SCANCODE_A]) {
         static_cast<Player*>(player)->left();
