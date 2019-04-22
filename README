@@ -1,8 +1,8 @@
-Name:
+Name: Drew Paszek
 
-Course:
+Course: CPSC 4160
 
-Clemson Email Address:
+Clemson Email Address: dpaszek@clemson.edu
 
 Project no: #5
 
@@ -11,10 +11,16 @@ Project due date: 8 AM Monday, April 22nd, 2019
 Project description: Add an Object Pool, Explosions, Projectiles,
                      Sound and Music.
 
-The easiest part of this project:
+The easiest part of this project: 
+-Adding music and sound effects was the easiest part
 
-Problems that I had in completing this project:
+Problems that I had in completing this project: 
+-No major problems
 
 Where did I get my Sound and Music?
+-Background music: "Ocean Man" by Ween (Instrumental) - https://www.youtube.com/watch?v=GhFNLTP7GV0
 
-What Objects did I pool?
+-Shooting Sound Effect: https://www.zapsplat.com/music/science-fiction-gun-single-shot-short-could-be-suppressed/
+
+What Objects did I pool? 
+-I pooled the bullets that the shark shoots using the space bar.
