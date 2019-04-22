@@ -27,6 +27,10 @@ OBJS = \
 	twowaysprite.o \
 	player.o \
 	hud.o \
+	multiBullets.o \
+	multiBullet.o \
+	explodingSprite.o \
+	chunk.o \
 	main.o
 EXEC = run
 

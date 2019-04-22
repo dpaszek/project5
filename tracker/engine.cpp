@@ -51,8 +51,9 @@ Engine::Engine() :
   hudState(true),
   makeVideo( false )
 {
-  strategies.push_back( new RectangularCollisionStrategy );
+  
   strategies.push_back( new PerPixelCollisionStrategy );
+  strategies.push_back( new RectangularCollisionStrategy );
   strategies.push_back( new MidPointCollisionStrategy );
   
   player->setScale(1.5);
@@ -115,6 +116,8 @@ void Engine::draw() const {
 }
 
 void Engine::checkForCollisions() {
+  
+  //Detection of contact collisions of trash sprites
   auto it = smart.begin();
   while ( it != smart.end() ) {
     if ( strategies[currentStrategy]->execute(*player, **it) ) {
@@ -124,6 +127,27 @@ void Engine::checkForCollisions() {
       it = smart.erase(it);
     }
     else ++it;
+  }
+  
+  //Detecting shooting collisions
+  auto t = smart.begin();
+  while ( t != smart.end() ) {
+    if ( player->shot(*t)) {
+      SmartSprite* doa = *t;
+      player->detach(doa);
+      delete doa;
+      t = smart.erase(t);
+    }
+    else ++t;
+  }
+  
+  //Detecting fish/shark collisions
+  auto u = dumb.begin();
+  while (u != dumb.end()){
+  	if(player->collidedWith(*u)){
+  	  player->explode();
+  	}
+  	else ++u;
   }
 }
 
@@ -193,6 +217,9 @@ void Engine::play() {
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
       clock.incrFrame();
+      if (keystate[SDL_SCANCODE_SPACE]){
+      	static_cast<Player*>(player)->shoot();
+      }
       if (keystate[SDL_SCANCODE_A]) {
         static_cast<Player*>(player)->left();
       }
@@ -205,6 +232,7 @@ void Engine::play() {
       if (keystate[SDL_SCANCODE_S]) {
         static_cast<Player*>(player)->down();
       }
+      checkForCollisions();
       draw();
       update(ticks);
       if ( makeVideo ) {

@@ -1,6 +1,9 @@
 #include "player.h"
 #include "gameData.h"
 #include "imageFactory.h"
+#include "multiBullets.h"
+#include "collisionStrategy.h"
+#include "explodingSprite.h"
 
 void Player::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
@@ -8,6 +11,11 @@ void Player::advanceFrame(Uint32 ticks) {
     currentFrame = (currentFrame+1) % numberOfFrames;
 		timeSinceLastFrame = 0;
 	}
+}
+
+Player::~Player(){
+	delete collisionStrategy;
+	delete explosion;
 }
 
 Player::Player( const std::string& name) :
@@ -26,7 +34,14 @@ Player::Player( const std::string& name) :
   timeSinceLastFrame( 0 ),
   worldWidth(Gamedata::getInstance().getXmlInt("world/width")),
   worldHeight(Gamedata::getInstance().getXmlInt("world/height")),
-  initialVelocity(getVelocity())
+  initialVelocity(getVelocity()),
+  collisionStrategy(new PerPixelCollisionStrategy),
+  explosion(nullptr),
+  bulletName(Gamedata::getInstance().getXmlStr(name+"/bulletName")),
+  bulletInterval(Gamedata::getInstance().getXmlInt(bulletName+"/interval")),
+  timeSinceLastBullet(0),
+  bulletSpeed(Gamedata::getInstance().getXmlInt(bulletName+"/speedX")),
+  bullets(bulletName)
 { }
 
 Player::Player(const Player& s) :
@@ -40,10 +55,17 @@ Player::Player(const Player& s) :
   timeSinceLastFrame( s.timeSinceLastFrame ),
   worldWidth( s.worldWidth ),
   worldHeight( s.worldHeight ),
-  initialVelocity( s.initialVelocity )
-  { }
+  initialVelocity( s.initialVelocity ),
+  collisionStrategy(s.collisionStrategy),
+  explosion(s.explosion),
+  bulletName(s.bulletName),
+  bulletInterval(s.bulletInterval),
+  timeSinceLastBullet(s.timeSinceLastBullet),
+  bulletSpeed(s.bulletSpeed),
+  bullets(s.bullets)
+{ }
 
-Player& Player::operator=(const Player& s) {
+/*Player& Player::operator=(const Player& s) {
   Drawable::operator=(s);
   imagesRight = (s.imagesRight);
   imagesLeft = (s.imagesLeft);
@@ -55,11 +77,64 @@ Player& Player::operator=(const Player& s) {
   worldWidth = ( s.worldWidth );
   worldHeight = ( s.worldHeight );
   initialVelocity = ( s.initialVelocity );
+  collisionStrategy = (s.collisionStrategy);
+  explosion = (s.explosion);
+  bulletName = (s.bulletName);
+  bulletInterval = (s.bulletInterval);
+  timeSinceLastBullet = (s.timeSinceLastBullet);
+  bulletSpeed = (s.bulletSpeed);
   return *this;
-}
+}*/
 
 void Player::draw() const { 
+  if ( explosion ) {
+    explosion->draw();
+    return;
+  }
+  
   images[currentFrame]->draw(getX(), getY(), getScale());
+  bullets.draw();
+}
+
+bool Player::shot(const Drawable* obj ) {
+  if ( bullets.collidedWith(obj) ) return true;
+  else return false;
+}
+
+bool Player::collidedWith(const Drawable* obj ) {
+  if ( explosion ) return false;
+  if ( collisionStrategy->execute(*this, *obj) ) {
+    return true;
+  }
+  return false;
+}
+
+void Player::explode() { 
+  if ( !explosion ) {
+    Sprite 
+    sprite(getName(), getPosition(), getVelocity(), images[currentFrame]);
+    sprite.setScale( getScale() );
+    explosion = new ExplodingSprite(sprite);
+  }
+}
+
+void Player::shoot() { 
+  // See if it's time to shoot a bullet:
+	if (timeSinceLastBullet > bulletInterval) {
+    Vector2f vel = getVelocity();
+    float x; 
+    float y = getY()+getScaledHeight()/4+11;
+    if ( vel[0] > 0 ) {
+      x = getX()+getScaledWidth()-10;
+      vel[0] += bulletSpeed;
+    }
+    else {
+      x = getX();
+      vel[0] -= bulletSpeed;
+    }
+    bullets.shoot( Vector2f(x, y), vel ); 
+		timeSinceLastBullet = 0;
+  }
 }
 
 void Player::stop() { 
@@ -92,7 +167,18 @@ void Player::down()  {
 }
 
 void Player::update(Uint32 ticks) { 
+  if ( explosion ) {
+    explosion->update(ticks);
+    if ( explosion->chunkCount() == 0 ) {
+      delete explosion;
+      explosion = NULL;
+    }
+    return;
+  }
+  
   advanceFrame(ticks);
+  timeSinceLastBullet += ticks;
+  bullets.update(ticks);
 
   Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;
   setPosition(getPosition() + incr);

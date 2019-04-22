@@ -58,22 +58,22 @@ void hud::draw(bool enable) const
     	SDL_SetRenderDrawColor( rend, r, g, b, a);
     	SDL_RenderDrawRect( rend, &re );
     	
-    	SDL_Color red = {r, g, b, a};
+    	SDL_Color col = {r, g, b, a};
     	std::string fps;
   		std::stringstream strm;
   		strm << "fps: " << clock.getFps();
   		fps = strm.str();
   		string msg1 = "Objective: Clean ocean by eating trash";
-  		writeText(font, msg1, 5, 5, red, rend);
+  		writeText(font, msg1, 5, 5, col, rend);
   		string msg2 = "ASDW - Move Shark Player";
-  		writeText(font, msg2, 5, 35, red, rend);
+  		writeText(font, msg2, 5, 30, col, rend);
   		string msg3 = "P - Pause Game";
-  		writeText(font, msg3, 5, 65, red, rend);
+  		writeText(font, msg3, 5, 55, col, rend);
   		string msg4 = "ESC/q - Quit Game";
-  		writeText(font, msg4, 5, 95, red, rend);
+  		writeText(font, msg4, 5, 80, col, rend);
   		string msg5 = "F1 - Toggle HUD";
-  		writeText(font, msg5, 5, 125, red, rend);
-  		writeText(font, fps, 5, 155, red, rend);
+  		writeText(font, msg5, 5, 105, col, rend);
+  		writeText(font, fps, 5, 130, col, rend);
 
 	}
 }

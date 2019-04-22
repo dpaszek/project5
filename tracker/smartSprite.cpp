@@ -4,6 +4,8 @@
 #include "smartSprite.h"
 #include "gameData.h"
 #include "renderContext.h"
+#include "sprite.h"
+#include "explodingSprite.h"
 
 float distance(float x1, float y1, float x2, float y2) {
   float x = x1-x2;
@@ -24,20 +26,39 @@ SmartSprite::SmartSprite(const std::string& name, const Vector2f& pos,
   playerWidth(w),
   playerHeight(h),
   currentMode(NORMAL),
-  safeDistance(Gamedata::getInstance().getXmlFloat(name+"/safeDistance"))
+  safeDistance(Gamedata::getInstance().getXmlFloat(name+"/safeDistance")),
+  explosion(nullptr),
+  image( ImageFactory::getInstance().getImage(name) )
 {}
 
+void SmartSprite::explode(){
+	if(!explosion){
+		Sprite sprite(getName(), getPosition(), getVelocity(), getImage());
+		explosion = new ExplodingSprite(sprite);
+		
+	}
+}
 
-SmartSprite::SmartSprite(const SmartSprite& s) : 
-  Sprite(s),
-  playerPos(s.playerPos),
-  playerWidth(s.playerWidth),
-  playerHeight(s.playerHeight),
-  currentMode(s.currentMode),
-  safeDistance(s.safeDistance)
-{}
+void SmartSprite::draw() const { 
+  if(explosion){
+  	explosion->draw();
+  	return;
+  }
+  image->draw(getX(), getY(), getScale());
+  
+}
+
 
 void SmartSprite::update(Uint32 ticks) { 
+  if(explosion){
+  	explosion->update(ticks);
+  	if(explosion->chunkCount() == 0){
+  	  delete explosion;
+  	  explosion = nullptr;
+  	}
+  	return;
+  }
+  
   Sprite::update(ticks);
   float x= getX()+getImage()->getWidth()/2;
   float y= getY()+getImage()->getHeight()/2;

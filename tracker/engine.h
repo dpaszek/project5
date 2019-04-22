@@ -29,7 +29,6 @@ private:
   SDL_Renderer * const renderer;
   World ocean;
   World mount;
-  
   Viewport& viewport;
 
   SubjectSprite* player;
@@ -42,7 +41,6 @@ private:
   std::vector<CollisionStrategy*> strategies;
   
   const hud& h;
-  
   bool hudState;
   
   bool makeVideo;
